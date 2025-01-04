@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import {
+	Box,
+	CloseButton,
 	Divider,
 	Modal,
 	ModalContent,
@@ -9,9 +11,15 @@ import {
 	Text
 } from '@chakra-ui/react'
 
-export const Filter = () => {
+import { useFilters } from '@api/queries/filter.ts'
+
+import { FilterSection } from '@components/Filter/FilterSection/FilterSection.tsx'
+
+export const FilterModal = () => {
 	const { t } = useTranslation('filter')
 	const [isOpenModal, setIsOpenModal] = useState(true)
+	const { data: filters } = useFilters()
+
 	return (
 		<Modal
 			isOpen={isOpenModal}
@@ -21,17 +29,34 @@ export const Filter = () => {
 			<ModalOverlay />
 			<ModalContent
 				borderRadius="1rem"
-				maxWidth="1280px"
+				maxWidth="80rem"
 				display="flex"
 				alignItems="center"
+				py="2.5rem"
 			>
+				<CloseButton
+					size="lg"
+					position="absolute"
+					right="2rem"
+					top="3.5rem"
+					onClick={() => setIsOpenModal(false)}
+				/>
 				<Text
 					fontSize="4xl"
 					color="gray.500"
+					mb="1.5rem"
 				>
 					{t('filter')}
 				</Text>
-				<Divider />
+				<Divider borderWidth="2px" />
+				<Box width="100%">
+					{filters?.map(filter => (
+						<FilterSection
+							key={filter.id}
+							filter={filter}
+						/>
+					))}
+				</Box>
 			</ModalContent>
 		</Modal>
 	)
