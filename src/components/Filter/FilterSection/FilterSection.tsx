@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 import {
 	Box,
 	Checkbox,
@@ -9,11 +11,26 @@ import {
 
 import { FilterItem } from '@api/types/Filter'
 
+import { useFilterStore } from '@store'
+
 interface FilterSectionProps {
 	filter: FilterItem
 }
 
 export const FilterSection = ({ filter }: FilterSectionProps) => {
+	const updateFilter = useFilterStore(state => state.updateFilter)
+	const selectedFilters = useFilterStore(state => state.filters)
+	const [defaultValue, setDefaultValue] = useState<string[]>([])
+	const handleChangeFilters = (selectedIds: string[]) => {
+		updateFilter(filter.id, selectedIds)
+	}
+	useEffect(() => {
+		const foundFilter = selectedFilters.find(el => el.id === filter.id)
+		if (foundFilter) {
+			setDefaultValue(foundFilter.optionsIds)
+		}
+	}, [selectedFilters])
+
 	return (
 		<Box pt="2rem">
 			{filter.description && (
@@ -24,7 +41,10 @@ export const FilterSection = ({ filter }: FilterSectionProps) => {
 					{filter.description}
 				</Text>
 			)}
-			<CheckboxGroup>
+			<CheckboxGroup
+				onChange={handleChangeFilters}
+				value={defaultValue}
+			>
 				<SimpleGrid
 					spacingY="1rem"
 					columns={3}
@@ -33,8 +53,9 @@ export const FilterSection = ({ filter }: FilterSectionProps) => {
 					{filter.options.map(option => (
 						<Checkbox
 							key={option.id}
-							size="lgThick"
+							size="smThick"
 							variant="rounded"
+							value={option.id}
 						>
 							{option.name}
 						</Checkbox>
