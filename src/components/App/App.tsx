@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react'
 
-import { Filter } from '@components/Filter/Filter.tsx'
+import { FilterModal } from '@components/Filter/FilterModal.tsx'
 
 export const App = () => {
 	return (
@@ -9,7 +9,7 @@ export const App = () => {
 			mx="auto"
 			minH="100dvh"
 		>
-			<Filter />
+			<FilterModal />
 		</Box>
 	)
 }
