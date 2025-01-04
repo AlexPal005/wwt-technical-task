@@ -1,3 +1,7 @@
 {
-  "filter": "Filter"
+  "filter": "Filter",
+  "apply": "Apply",
+  "applyModalTitle": "Do you want to apply new filter?",
+  "useOld": "Use old filter",
+  "applyNew": "Apply new filter"
 }

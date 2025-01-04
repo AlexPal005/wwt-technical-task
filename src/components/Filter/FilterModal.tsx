@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import {
 	Box,
+	Button,
 	CloseButton,
 	Divider,
 	Modal,
@@ -13,17 +14,23 @@ import {
 
 import { useFilters } from '@api/queries/filter.ts'
 
+import { ApplyNewFilterModal } from '@components/Filter/ApplyNewFilterModal/ApplyNewFilterModal.tsx'
 import { FilterSection } from '@components/Filter/FilterSection/FilterSection.tsx'
 
-export const FilterModal = () => {
+export interface ModalProps {
+	openModal: boolean
+	setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export const FilterModal = ({ openModal, setOpenModal }: ModalProps) => {
 	const { t } = useTranslation('filter')
-	const [isOpenModal, setIsOpenModal] = useState(true)
 	const { data: filters } = useFilters()
+	const [openApplyModal, setOpenApplyModal] = useState(false)
 
 	return (
 		<Modal
-			isOpen={isOpenModal}
-			onClose={() => setIsOpenModal(false)}
+			isOpen={openModal}
+			onClose={() => setOpenModal(false)}
 			closeOnOverlayClick={true}
 		>
 			<ModalOverlay />
@@ -39,7 +46,7 @@ export const FilterModal = () => {
 					position="absolute"
 					right="2rem"
 					top="3.5rem"
-					onClick={() => setIsOpenModal(false)}
+					onClick={() => setOpenModal(false)}
 				/>
 				<Text
 					fontSize="4xl"
@@ -57,7 +64,22 @@ export const FilterModal = () => {
 						/>
 					))}
 				</Box>
+				<Button
+					colorScheme="brand"
+					size="lg"
+					mt="2rem"
+					width="11.5rem"
+					onClick={() => {
+						setOpenApplyModal(true)
+					}}
+				>
+					{t('apply')}
+				</Button>
 			</ModalContent>
+			<ApplyNewFilterModal
+				openModal={openApplyModal}
+				setOpenModal={setOpenApplyModal}
+			/>
 		</Modal>
 	)
 }
