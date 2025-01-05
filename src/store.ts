@@ -25,6 +25,7 @@ export const useFilterStore = create<FilterStore>(set => ({
 			}
 			const otherFilters = state.filters.filter(filter => filter.id !== id)
 			const newFilters = [...otherFilters, updatedFilter]
+			console.log('filters: ', newFilters)
 			return {
 				filters: newFilters
 			}
