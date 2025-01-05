@@ -28,8 +28,7 @@ const baseStyle = definePartsStyle({
 		fontSize: '2.5rem',
 		fontWeight: 'medium',
 		textAlign: 'center',
-		pb: 5,
-		borderBottom: '1px solid #AAAAAA'
+		pb: 5
 	},
 
 	body: {
