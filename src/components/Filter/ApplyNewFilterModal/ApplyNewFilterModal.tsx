@@ -1,16 +1,9 @@
 import { useTranslation } from 'react-i18next'
 
-import {
-	Button,
-	CloseButton,
-	Flex,
-	Modal,
-	ModalContent,
-	ModalOverlay,
-	Text
-} from '@chakra-ui/react'
+import { Button, Flex, ModalHeader } from '@chakra-ui/react'
 
 import { ModalProps } from '@components/Filter/FilterModal.tsx'
+import { ModalBase } from '@components/ModalBase/ModalBase.tsx'
 import { useFilterStore } from '@store'
 
 export const ApplyNewFilterModal = ({
@@ -33,55 +26,32 @@ export const ApplyNewFilterModal = ({
 		setOpenModal(false)
 	}
 	return (
-		<Modal
+		<ModalBase
 			isOpen={openModal}
-			closeOnOverlayClick={true}
 			onClose={() => setOpenModal(false)}
 		>
-			<ModalOverlay />
-			<ModalContent
-				borderRadius="1rem"
-				maxWidth="80rem"
-				display="flex"
-				alignItems="center"
-				py="2.5rem"
+			<ModalHeader> {t('applyModalTitle')}</ModalHeader>
+			<Flex
+				gap="2rem"
+				mt="7.5rem"
 			>
-				<CloseButton
+				<Button
+					variant="outline"
 					size="lg"
-					position="absolute"
-					right="2rem"
-					top="3.5rem"
-					onClick={() => setOpenModal(false)}
-				/>
-
-				<Text
-					fontSize="4xl"
-					color="gray.500"
+					width="17.5rem"
+					onClick={useOldFilters}
 				>
-					{t('applyModalTitle')}
-				</Text>
-				<Flex
-					gap="2rem"
-					mt="7.5rem"
+					{t('useOld')}
+				</Button>
+				<Button
+					colorScheme="brand"
+					size="lg"
+					width="17.5rem"
+					onClick={applyFilters}
 				>
-					<Button
-						variant="outline"
-						size="lg"
-						width="17.5rem"
-						onClick={useOldFilters}
-					>
-						{t('useOld')}
-					</Button>
-					<Button
-						colorScheme="brand"
-						size="lg"
-						width="17.5rem"
-						onClick={applyFilters}
-					>
-						{t('applyNew')}
-					</Button>
-				</Flex>
-			</ModalContent>
-		</Modal>
+					{t('applyNew')}
+				</Button>
+			</Flex>
+		</ModalBase>
 	)
 }
