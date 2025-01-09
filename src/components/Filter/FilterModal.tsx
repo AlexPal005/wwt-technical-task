@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Box, Button, Divider, ModalHeader } from '@chakra-ui/react'
@@ -17,12 +17,20 @@ export interface ModalProps {
 export const FilterModal = ({ openModal, setOpenModal }: ModalProps) => {
 	const { t } = useTranslation('filter')
 	const { data: filters } = useFilters()
-	const [openApplyModal, setOpenApplyModal] = useState(false)
+	const [isOpenApplyModal, setIsOpenApplyModal] = useState(false)
+
+	const closeModal = useCallback(() => {
+		setOpenModal(false)
+	}, [])
+
+	const openApplyModal = useCallback(() => {
+		setIsOpenApplyModal(true)
+	}, [])
 
 	return (
 		<ModalBase
 			isOpen={openModal}
-			onClose={() => setOpenModal(false)}
+			onClose={closeModal}
 		>
 			<ModalHeader> {t('filter')}</ModalHeader>
 			<Divider borderWidth="2px" />
@@ -39,15 +47,13 @@ export const FilterModal = ({ openModal, setOpenModal }: ModalProps) => {
 				size="lg"
 				mt="2rem"
 				width="11.5rem"
-				onClick={() => {
-					setOpenApplyModal(true)
-				}}
+				onClick={openApplyModal}
 			>
 				{t('apply')}
 			</Button>
 			<ApplyNewFilterModal
-				openModal={openApplyModal}
-				setOpenModal={setOpenApplyModal}
+				openModal={isOpenApplyModal}
+				setOpenModal={setIsOpenApplyModal}
 			/>
 		</ModalBase>
 	)

@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Button, Flex, ModalHeader } from '@chakra-ui/react'
@@ -13,22 +14,28 @@ export const ApplyNewFilterModal = ({
 	const { t } = useTranslation('filter')
 	const filters = useFilterStore(state => state.filters)
 	const setFilters = useFilterStore(state => state.setFilters)
-	const applyFilters = () => {
+
+	const applyFilters = useCallback(() => {
 		localStorage.setItem('filters', JSON.stringify(filters)) // add in local storage
 		setOpenModal(false)
-	}
+	}, [filters, localStorage])
 
-	const useOldFilters = () => {
+	const useOldFilters = useCallback(() => {
 		const filtersFromStorage = JSON.parse(
 			localStorage.getItem('filters') || '[]'
 		)
 		setFilters(filtersFromStorage)
 		setOpenModal(false)
-	}
+	}, [localStorage])
+
+	const closeFilterModal = useCallback(() => {
+		setOpenModal(false)
+	}, [])
+
 	return (
 		<ModalBase
 			isOpen={openModal}
-			onClose={() => setOpenModal(false)}
+			onClose={closeFilterModal}
 		>
 			<ModalHeader> {t('applyModalTitle')}</ModalHeader>
 			<Flex
