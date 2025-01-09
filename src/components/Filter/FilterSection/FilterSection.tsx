@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import {
 	Box,
@@ -21,15 +21,20 @@ export const FilterSection = ({ filter }: FilterSectionProps) => {
 	const updateFilter = useFilterStore(state => state.updateFilter)
 	const selectedFilters = useFilterStore(state => state.filters)
 	const [defaultValue, setDefaultValue] = useState<string[]>([])
-	const handleChangeFilters = (selectedIds: string[]) => {
-		updateFilter(filter.id, selectedIds)
-	}
+
+	const handleChangeFilters = useCallback(
+		(selectedIds: string[]) => {
+			updateFilter(filter.id, selectedIds)
+		},
+		[selectedFilters]
+	)
+
 	useEffect(() => {
 		const foundFilter = selectedFilters.find(el => el.id === filter.id)
 		if (foundFilter) {
 			setDefaultValue(foundFilter.optionsIds)
 		}
-	}, [selectedFilters])
+	}, [selectedFilters, handleChangeFilters])
 
 	return (
 		<Box pt="2rem">

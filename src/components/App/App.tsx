@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Box, Button, Flex } from '@chakra-ui/react'
@@ -8,6 +8,11 @@ import { FilterModal } from '@components/Filter/FilterModal.tsx'
 export const App = () => {
 	const { t } = useTranslation('main')
 	const [openModal, setOpenModal] = useState(false)
+
+	const openFilterModal = useCallback(() => {
+		setOpenModal(true)
+	}, [])
+
 	return (
 		<Box
 			maxW="90rem"
@@ -22,7 +27,7 @@ export const App = () => {
 				<Button
 					colorScheme="brand"
 					size="lg"
-					onClick={() => setOpenModal(true)}
+					onClick={openFilterModal}
 				>
 					{t('openFilters')}
 				</Button>
